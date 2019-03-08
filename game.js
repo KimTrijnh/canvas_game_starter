@@ -19,16 +19,22 @@ let count = 0;
 
 
 //time counting
-let time = 0;
-
-function timeUpdate() {
-  time++;
-  timer.innerText = `${time} s`;
+let t = 0;
+let timeUpdate =  function () {
+  t++;
+  timer.innerText = `${t} s`;
 }
 
-function timerStart() {
-  setInterval(timeUpdate, 1000)
-}
+//strigger timing
+let myTimer; 
+function test() {
+ myTimer = setInterval(timeUpdate, 1000)
+  }
+
+  //stop timing
+let stopTimer = function(t) {
+clearInterval(t);
+}  
 
 
 function random() {
@@ -40,10 +46,14 @@ function random() {
 
 function countAndShow() {
   //count times a monster has caught
-  count++;
-  result.innerText = `${count}`;
-  return count;
-}
+  if(count <5) {
+    count++;
+    result.innerText = `${count}`;
+  } else if (count === 5) {
+    stopTimer(myTimer);
+  }
+  }
+
 
 
 canvas = document.createElement("canvas");
@@ -197,7 +207,7 @@ requestAnimationFrame =
   w.mozRequestAnimationFrame;
 
 // Let's play this game!
-startBtn.addEventListener("click", timerStart);
+startBtn.addEventListener("click", test);
 loadImages();
 setupKeyboardListeners();
 main();
