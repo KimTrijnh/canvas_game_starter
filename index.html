@@ -2,9 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <title>Best Game Ever!</title>
   </head>
   <body>
+    <div id="main" class="d-flex justify-content-start">
+      <div>
+        <h4>It's hunting season</h4></div>
+      <div>
+        <button id="start" class="btn btn-success">Start</button>
+        <button id="reset" class="btn btn-info">Reset</button>
+      </div>
+      <div id="info">
+        <div id="count"></div>
+        <div id="timer"></div>
+      </div>
+    </div>
     <script src="game.js"></script>
   </body>
 </html>
