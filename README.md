@@ -32,7 +32,7 @@ This code was reviewed by @Charles Lee
 - [x] The user can see the numbers of plants she has caught. Every time she catches a plant, the number should increment by one. 
 - [x] The game ends when the user has caught 10 plants. The total time elapsed is displayed upon game completion, in seconds.
 - [x] The user can access this game from the internet (e.g. using Netlify).
-- [ ] The code has been reviewed by at least one other person, using Pull Requests on GitHub.
+- [x] The code has been reviewed by at least one other person, using Pull Requests on GitHub.
 
 ## Optional User Stories
 
@@ -43,7 +43,7 @@ This code was reviewed by @Charles Lee
 - [x] The map has "obstacles", such as trees, 
 - [ ] obstacles should block the user from moving through the space occupied by the obstacle. 
 - [ ] The user can hear sound effects upon movement and upon catching a plant. 
-- [ ] The user hears background music during the game. 
+- [x] The user hears background music during the game. 
 - [x] The user can see their high score. 
 
 
