@@ -2,9 +2,10 @@ let canvas;
 let ctx;
 let bgReady, zoombieReady, plantReady, fixedReady;
 let bgImage, zoombieImage, plantImage, fixedImage;
-let plantsUrl = ["/images/plant.png", "/images/plant-1.png", 
-"/images/plant-2.png", "/images/plant-3.png"];
-let startBtn = document.getElementById("start"); 
+let plantsUrl = ["/images/plant.png", "/images/plant-1.png",
+  "/images/plant-2.png", "/images/plant-3.png"
+];
+let startBtn = document.getElementById("start");
 let info = document.getElementById("info");
 let lifeCount = document.getElementById("life");
 let myTimer;
@@ -26,50 +27,49 @@ function random(x) {
 }
 
 //Timing & Counting
-function timeUpdate() {
-  t++;
-};
-
-function stopTimer(t) {
-  clearInterval(t);
+let startTime;
+let eslaped = 0;
+let timeUpdate = function () {
+  eslaped = Math.floor((Date.now() - startTime) / 1000);
 };
 
 //To start: press start btn or press enter
 function start() {
+  clearInterval(timeUpdate);
+  startTime = Date.now();
+  setInterval(timeUpdate, 1000);
   count = 0;
-  t = 0;
   life = 3;
-lifeCount.innerText = `Life left: ${life}`;
- myTimer = setInterval(timeUpdate, 1000);
+  lifeCount.innerText = `Life left: ${life}`;
   setupKeyboardListeners();
-  }
+}
 
 let enterPress = function (key) {
   // press Enter to start
-  if(key.keyCode == 13) {
+  if (key.keyCode == 13) {
     start();
   }
- }
+}
 
- startBtn.addEventListener('click', start);
+startBtn.addEventListener('click', start);
 
 
- addEventListener("keydown", enterPress, false);
+addEventListener("keydown", enterPress, false);
 
 function countAndShow() {
   //count times a plant has caught
   if (count < 10) {
     count++;
-  } 
+  }
   if (count === 10) {
-    score.push(t);
-  var best =  Math.min(...score);
-    info.innerText = `recent score: ${t} s
+    score.push(eslaped);
+    var best = Math.min(...score);
+    info.innerText = `recent score: ${eslaped} s
     Your best:  ${best} s `;
     stopTimer(myTimer);
     stopKeyboarListeners();
   }
-  
+
 }
 
 //load imgages
@@ -181,21 +181,21 @@ let update = function () {
   //check if zoombie run into obtables
 
 
-  
-   if ( // Check if player and plant collided.
+
+  if ( // Check if player and plant collided.
     zoombieX <= (plantX + plantImage.width) &&
     plantX <= (zoombieX + plantImage.width) &&
     zoombieY <= (plantY + plantImage.height) &&
     plantY <= (zoombieY + plantImage.height)
-  ) { 
-     // Pick a new location for the plant.
+  ) {
+    // Pick a new location for the plant.
     let i = random(4);
     plantImage.src = plantsUrl[i];
     plantX = random(canvas.width - plantImage.width);
     plantY = random(canvas.height - plantImage.height);
     countAndShow();
   }
- 
+
 };
 
 /**
@@ -219,7 +219,7 @@ var render = function () {
   //render time - count on canvas  
   ctx.font = "24px ZCOOL QingKe HuangYou";
   ctx.fillStyle = "red";
-  let text = ctx.fillText(`${t}s . Plant: ${count} `, 840, 400);
+  ctx.fillText(`${eslaped}s . Plant: ${count} `, 840, 400);
 };
 
 /**
@@ -231,7 +231,7 @@ var render = function () {
 var main = function () {
   update();
   render();
-  
+
   // Request to do this again ASAP. This is a special method
   // for web browsers. 
   requestAnimationFrame(main);
@@ -257,45 +257,44 @@ var ball = {
   y: 100,
   vx: 6,
   vy: 6,
-  draw: function() {
-     ctx.drawImage(img, this.x, this.y);
-    },
-  pause: function() {
-  }
+  draw: function () {
+    ctx.drawImage(img, this.x, this.y);
+  },
+  pause: function () {}
 };
 
 function draw() {
-   ball.draw();
+  ball.draw();
   ball.x += ball.vx;
   ball.y += ball.vy;
 
   if (ball.y + ball.vy > canvas.height ||
-      ball.y + ball.vy < 0) {
+    ball.y + ball.vy < 0) {
     ball.vy = -ball.vy;
   }
   if (ball.x + ball.vx > canvas.width ||
-      ball.x + ball.vx < 0) {
+    ball.x + ball.vx < 0) {
     ball.vx = -ball.vx;
   }
   if (
     zoombieX <= (ball.x + 50) &&
-    ball.x <= (zoombieX +50) &&
+    ball.x <= (zoombieX + 50) &&
     zoombieY <= (ball.y + 50) &&
     ball.y <= (zoombieY + 50)
   ) {
-    if(life >0) {
+    if (life > 0) {
       ball.x = random(canvas.width - 50);
       ball.y = random(canvas.height - 50);
-      life = life -1;
+      life = life - 1;
       lifeCount.innerText = `Life left: ${life}`;
     }
     if (life === 0) {
       lifeCount.innerText = `You LOSE`;
       stopTimer(myTimer);
       stopKeyboarListeners();
-    
-        }
+
+    }
   }
- raf = window.requestAnimationFrame(draw);
+  raf = window.requestAnimationFrame(draw);
 }
 window.requestAnimationFrame(draw);
