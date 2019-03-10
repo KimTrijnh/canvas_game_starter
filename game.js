@@ -1,13 +1,21 @@
 let canvas;
 let ctx;
-let bgReady, zoombieReady, plantReady, fixedReady;
-let bgImage, zoombieImage, plantImage, fixedImage;
+let bgReady, zoombieReady, plantReady, fixedReady, boomReady;
+let bgImage, zoombieImage, plantImage, fixedImage, boomImage;
 let plantsUrl = ["/images/plant.png", "/images/plant-1.png",
   "/images/plant-2.png", "/images/plant-3.png"
 ];
 let startBtn = document.getElementById("start");
 let info = document.getElementById("info");
 let lifeCount = document.getElementById("life");
+let bgMusic = document.getElementById("bg-music");
+let walkMusic = document.getElementById("walk-sound");
+function playAudio(a) {
+  a.play();
+}
+function pauseAudio(a) {
+  a.pause();
+}
 let myTimer;
 let count = 0;
 let t = 0;
@@ -40,6 +48,7 @@ function start() {
   setInterval(timeUpdate, 1000);
   count = 0;
   life = 3;
+  resetSpeed();
   lifeCount.innerText = `Life left: ${life}`;
   setupKeyboardListeners();
 }
@@ -60,63 +69,17 @@ function countAndShow() {
     count++;
   }
   if (count === 10) {
+    stopMoving();
     score.push(eslaped);
     var best = Math.min(...score);
     lifeCount.innerText = `YOU WIN!!!`;
     info.innerText = `recent score: ${eslaped} s
     Your best:  ${best} s `;
-    clearInterval(timeUpdate);
+    clearInterval(timeUpdate); //????: WHY DOESN'T WORK
     stopKeyboarListeners();
   }
 
 }
-
-//load imgages
-function loadImages() {
-  bgImage = new Image();
-  bgImage.onload = function () {
-    // show the background image
-    bgReady = true;
-  };
-  bgImage.src = "images/bg-zombie.png";
-
-  fixedImage = new Image();
-  fixedImage.onload = function () {
-    //show fixed zoombies
-    fixedReady = true;
-  }
-  fixedImage.src = "images/fixed-4.png";
-
-  zoombieImage = new Image();
-  zoombieImage.onload = function () {
-    // show the hero image
-    zoombieReady = true;
-  };
-  zoombieImage.src = "images/zoombie-1.png";
-
-  plantImage = new Image();
-  plantImage.onload = function () {
-    // show the plant image
-    plantReady = true;
-  };
-  plantImage.src = "images/plant.png";
-}
-
-/** 
- * Setting up our characters.
- */
-
-let zoombieX = canvas.width / 2;
-let zoombieY = canvas.height / 2;
-
-
-let plantX = 200;
-let plantY = 100;
-
-let f1_X = 300;
-let f1_Y = 330;
-let f2_X = 410;
-let f2_Y = 130;
 
 
 /** 
@@ -127,6 +90,8 @@ let keysDown = {};
 
 let handleKeyUp = function (key) {
   delete keysDown[key.keyCode];
+  //stop moving sound
+  
 };
 
 let handleKeyDown = function (key) {
@@ -153,15 +118,19 @@ function stopKeyboarListeners() {
 let update = function () {
   if (38 in keysDown) { // Player is holding up key
     zoombieY -= 5;
+    
+    
   }
   if (40 in keysDown) { // Player is holding down key
     zoombieY += 5;
+    
   }
   if (37 in keysDown) { // Player is holding left key
     zoombieX -= 5;
   }
   if (39 in keysDown) { // Player is holding right key
     zoombieX += 5;
+    
   }
   // check if zoombie out of canvas
   if (zoombieX < 0) {
@@ -197,6 +166,106 @@ let update = function () {
 
 };
 
+//****load imgages***/
+function loadImages() {
+  bgImage = new Image();
+  bgImage.onload = function () {
+    // show the background image
+    bgReady = true;
+  };
+  bgImage.src = "images/bg-zombie.png";
+
+  fixedImage = new Image();
+  fixedImage.onload = function () {
+    //show fixed zoombies
+    fixedReady = true;
+  }
+  fixedImage.src = "images/fixed-4.png";
+
+  zoombieImage = new Image();
+  zoombieImage.onload = function () {
+    // show the hero image
+    zoombieReady = true;
+  };
+  zoombieImage.src = "images/zoombie-1.png";
+
+  plantImage = new Image();
+  plantImage.onload = function () {
+    // show the plant image
+    plantReady = true;
+  };
+  plantImage.src = "images/plant.png";
+
+  boomImage = new Image();
+  boomImage.onload = function () {
+    boomReady = true;
+     };
+  boomImage.src = "/images/boom.png" ;
+
+}
+
+/** 
+ * Setting up our characters.
+ */
+
+let zoombieX = canvas.width / 2;
+let zoombieY = canvas.height / 2;
+
+
+let plantX = 200;
+let plantY = 100;
+
+let f1_X = 300;
+let f1_Y = 330;
+let f2_X = 410;
+let f2_Y = 130;
+
+let boomX = random(1000);
+let boomY = random(429);
+let vx =0;
+let vy=0;
+function resetSpeed() {
+vx = 8;
+vy = 6;
+}
+function stopMoving(){
+  vx = 0;
+  vy = 0;
+}
+
+function boomMoving() {
+  boomX += vx;
+  boomY += vy;
+  if (boomY + vy > canvas.height ||
+    boomY + vy < 0) {
+    vy = -vy;
+  }
+  if (boomX + vx > canvas.width ||
+    boomX + vx < 0) {
+    vx = -vx;
+  }
+  if (
+    zoombieX <= (boomX + 50) &&
+    boomX <= (zoombieX + 50) &&
+    zoombieY <= (boomY + 50) &&
+    boomY <= (zoombieY + 50)
+  ) {
+    if (life > 0) {
+      boomX = random(canvas.width - 50);
+      boomY = random(canvas.height - 50);
+      life --;
+      lifeCount.innerText = `Life left: ${life}`;
+    }
+    if (life === 0) {
+      lifeCount.innerText = `You LOSE`;
+      clearInterval(timeUpdate);   //????: WHY DOESN'T WORK
+      stopKeyboarListeners();
+      stopMoving();
+    }
+
+}
+}
+
 /**
  * This function, render, runs as often as possible.
  */
@@ -214,6 +283,10 @@ var render = function () {
   if (plantReady) {
     ctx.drawImage(plantImage, plantX, plantY);
   }
+  if (boomReady) {
+    ctx.drawImage(boomImage, boomX, boomY);
+    boomMoving();
+  }
 
   //render time - count on canvas  
   ctx.font = "24px ZCOOL QingKe HuangYou";
@@ -230,7 +303,7 @@ var render = function () {
 var main = function () {
   update();
   render();
-
+  
   // Request to do this again ASAP. This is a special method
   // for web browsers. 
   requestAnimationFrame(main);
@@ -244,55 +317,3 @@ requestAnimationFrame = w.requestAnimationFrame || w.webkitRequestAnimationFrame
 // Let's play this game!
 loadImages();
 main();
-
-
-// Testing feature: A cold boom. life left reduces if our zoombie catch it 
-var raf;
-var img = new Image();
-img.src = '/images/boom.png';
-
-var ball = {
-  x: 100,
-  y: 100,
-  vx: 6,
-  vy: 6,
-  draw: function () {
-    ctx.drawImage(img, this.x, this.y);
-  },
-  pause: function () {}
-};
-
-function draw() {
-  ball.draw();
-  ball.x += ball.vx;
-  ball.y += ball.vy;
-
-  if (ball.y + ball.vy > canvas.height ||
-    ball.y + ball.vy < 0) {
-    ball.vy = -ball.vy;
-  }
-  if (ball.x + ball.vx > canvas.width ||
-    ball.x + ball.vx < 0) {
-    ball.vx = -ball.vx;
-  }
-  if (
-    zoombieX <= (ball.x + 50) &&
-    ball.x <= (zoombieX + 50) &&
-    zoombieY <= (ball.y + 50) &&
-    ball.y <= (zoombieY + 50)
-  ) {
-    if (life > 0) {
-      ball.x = random(canvas.width - 50);
-      ball.y = random(canvas.height - 50);
-      life --;
-      lifeCount.innerText = `Life left: ${life}`;
-    }
-    if (life === 0) {
-      lifeCount.innerText = `You LOSE`;
-      clearInterval(timeUpdate);
-      stopKeyboarListeners();
-    }
-  }
-  raf = window.requestAnimationFrame(draw);
-}
-window.requestAnimationFrame(draw);
