@@ -1,29 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css?family=ZCOOL+QingKe+HuangYou" rel="stylesheet">
-    <title>plant & zoombie</title>
-  </head>
-  <body>
-    <div id="main" class="px-2">
-      <div class="">
-        <h3>It's hunting season</h3>
-        <p class="lead">Catch'em ten</p>
-        <p class="lead">Press Start or Enter to play</p>
-        
-      </div>
-      <div class="">
-        <button id="start" class="btn btn-success">Start</button>
-        <button id="reset" class="btn btn-info">Reset</button>
-      </div>
-        <div id="info" class="p-2">
-        <p id="life"></p>
-      </div>
+
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=ZCOOL+QingKe+HuangYou" rel="stylesheet">
+  <title>plant & zoombie</title>
+</head>
+
+<body>
+  <div id="main" class="px-2">
+    <div class="">
+      <h3>It's hunting season</h3>
+      <p class="lead">Catch'em ten</p>
+      <p class="lead">Press Start or Enter to play</p>
+
     </div>
-    <embed src="/Angry-Birds-Theme-Song.mp3" loop="true" hidden="true" type="audio/mpeg">
-    <script src="game.js"></script>
-  </body>
+    <div class="">
+      <button id="start" class="btn btn-success">Start</button>
+      <button id="reset" class="btn btn-info">Reset</button>
+    </div>
+
+    <div class="p-2">
+      <p id="life"></p>
+      <p id="info"></p>
+    </div>
+  </div>
+  <audio src="/sound/01 Crazy Dave's Greeting.mp3" loop="true" hidden="true" type="audio/mpeg" autoplay></audio>
+  <audio src="/sound/walk-1.mp3"></audio>
+ 
+  <script src="game.js"></script>
+</body>
+
 </html>

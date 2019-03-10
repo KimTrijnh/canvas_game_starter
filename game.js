@@ -51,10 +51,8 @@ let enterPress = function (key) {
   }
 }
 
-startBtn.addEventListener('click', start);
-
-
-addEventListener("keydown", enterPress, false);
+startBtn.addEventListener('click', start); //press start btn to start
+addEventListener("keydown", enterPress, false); //press enter to start
 
 function countAndShow() {
   //count times a plant has caught
@@ -64,9 +62,10 @@ function countAndShow() {
   if (count === 10) {
     score.push(eslaped);
     var best = Math.min(...score);
+    lifeCount.innerText = `YOU WIN!!!`;
     info.innerText = `recent score: ${eslaped} s
     Your best:  ${best} s `;
-    stopTimer(myTimer);
+    clearInterval(timeUpdate);
     stopKeyboarListeners();
   }
 
@@ -285,14 +284,13 @@ function draw() {
     if (life > 0) {
       ball.x = random(canvas.width - 50);
       ball.y = random(canvas.height - 50);
-      life = life - 1;
+      life --;
       lifeCount.innerText = `Life left: ${life}`;
     }
     if (life === 0) {
       lifeCount.innerText = `You LOSE`;
-      stopTimer(myTimer);
+      clearInterval(timeUpdate);
       stopKeyboarListeners();
-
     }
   }
   raf = window.requestAnimationFrame(draw);
