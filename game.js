@@ -268,7 +268,7 @@ function draw() {
    ball.draw();
   ball.x += ball.vx;
   ball.y += ball.vy;
-
+// I think the bounce back is not really clear on the y. 
   if (ball.y + ball.vy > canvas.height ||
       ball.y + ball.vy < 0) {
     ball.vy = -ball.vy;
