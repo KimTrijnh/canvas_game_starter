@@ -4,7 +4,7 @@ let bgReady, zoombieReady, plantReady, fixedReady;
 let bgImage, zoombieImage, plantImage, fixedImage;
 let plantsUrl = ["/images/plant.png", "/images/plant-1.png", 
 "/images/plant-2.png", "/images/plant-3.png"];
-let startBtn = document.getElementById("start"); //do more: add shortcut to start by keyboard, or only press first key.
+let startBtn = document.getElementById("start"); 
 let info = document.getElementById("info");
 let lifeCount = document.getElementById("life");
 let myTimer;
@@ -42,8 +42,7 @@ function start() {
 lifeCount.innerText = `Life left: ${life}`;
  myTimer = setInterval(timeUpdate, 1000);
   setupKeyboardListeners();
-  
-}
+  }
 
 let enterPress = function (key) {
   // press Enter to start
@@ -59,7 +58,6 @@ let enterPress = function (key) {
 
 function countAndShow() {
   //count times a plant has caught
- 
   if (count < 10) {
     count++;
   } 
@@ -124,7 +122,6 @@ let f2_Y = 130;
 
 /** 
  * Keyboard Listeners & Stop keyboard listener
- *
  */
 
 let keysDown = {};
@@ -184,24 +181,21 @@ let update = function () {
   //check if zoombie run into obtables
 
 
-  // Check if player and plant collided. Our images
-  // are about 56 pixels big.
-  if (
+  
+   if ( // Check if player and plant collided.
     zoombieX <= (plantX + plantImage.width) &&
     plantX <= (zoombieX + plantImage.width) &&
     zoombieY <= (plantY + plantImage.height) &&
     plantY <= (zoombieY + plantImage.height)
-  ) {
-    // Pick a new location for the plant.
+  ) { 
+     // Pick a new location for the plant.
     let i = random(4);
     plantImage.src = plantsUrl[i];
     plantX = random(canvas.width - plantImage.width);
     plantY = random(canvas.height - plantImage.height);
     countAndShow();
   }
-  // Check if player and plant collided. Our images
-  // are about 56 pixels big.
-
+ 
 };
 
 /**
